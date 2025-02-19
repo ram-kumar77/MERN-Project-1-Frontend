@@ -19,7 +19,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const eventsResponse = await axios.get('http://localhost:5000/api/events', {
+        const eventsResponse = await axios.get('${baseURL}/api/events', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
 
@@ -48,7 +48,7 @@ const AdminDashboard = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/events/${eventId}`, {
+      await axios.delete(`${baseURL}/api/events/${eventId}`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
 
   const handleCreateEvent = async (eventData) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/events', eventData, {
+      const response = await axios.post('${baseURL}/api/events', eventData, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 
@@ -87,7 +87,7 @@ const AdminDashboard = () => {
 
   const handleEditEvent = async (eventId, updatedData) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/events/${eventId}`, updatedData, {
+      const response = await axios.put(`${baseURL}/api/events/${eventId}`, updatedData, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 

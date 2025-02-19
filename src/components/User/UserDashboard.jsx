@@ -111,13 +111,13 @@ const UserDashboard = () => {
 
         // Fetch user tickets
         console.log('Fetching user tickets...');
-        const ticketsResponse = await axios.get('http://localhost:5000/api/tickets/user', {
+        const ticketsResponse = await axios.get('${baseURL}/api/tickets/user', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         console.log('Tickets response:', ticketsResponse.data);
 
         console.log('Fetching events...');
-        const eventsResponse = await axios.get('http://localhost:5000/api/events', {
+        const eventsResponse = await axios.get('${baseURL}/api/events', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         console.log('Events response:', eventsResponse.data);

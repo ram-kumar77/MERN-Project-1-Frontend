@@ -25,7 +25,7 @@ const EventDetails = () => {
           throw new Error('Invalid event ID');
         }
 
-        const response = await axios.get(`http://localhost:5000/api/events/${id}`, {
+        const response = await axios.get(`${baseURL}/api/events/${id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

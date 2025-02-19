@@ -7,7 +7,7 @@ const PurchaseTicketModal = ({ event, onClose }) => {
 
   const handlePurchase = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/tickets/purchase', {
+      const response = await axios.post('${baseURL}/api/tickets/purchase', {
         eventId: event._id,
         quantity: ticketQuantity,
         paymentMethod

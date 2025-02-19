@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: 'https://mern-project-1-backend-dlx4.onrender.com',
+  baseURL: 'https://mern-project-1-backend-k9iu.onrender.com',
   headers: {
     'Content-Type': 'application/json'
   }

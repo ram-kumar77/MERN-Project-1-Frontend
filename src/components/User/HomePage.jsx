@@ -66,7 +66,7 @@ const HomePage = () => {
       try {
         setLoading(true);
         // Fetch events from your API
-        const eventsResponse = await axios.get('http://localhost:5000/api/events', {
+        const eventsResponse = await axios.get('${baseURL}/api/events', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
