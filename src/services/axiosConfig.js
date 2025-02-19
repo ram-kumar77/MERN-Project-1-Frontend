@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api', // Adjust based on your backend port
+  baseURL: 'https://mern-project-1-backend-dlx4.onrender.com', // Adjust based on your backend port
   headers: {
     'Content-Type': 'application/json',
   }
