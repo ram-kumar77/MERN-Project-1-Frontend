@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../api/axiosConfig';
 import Navbar from '../Common/Navbar';
 import Footer from '../Common/Footer';
 import PurchaseTicketModal from './PurchaseTicketModal';
@@ -25,7 +25,7 @@ const EventDetails = () => {
           throw new Error('Invalid event ID');
         }
 
-        const response = await axios.get(`${baseURL}/api/events/${id}`, {
+        const response = await axiosInstance.get(`/events/${id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

@@ -1,15 +1,7 @@
-import axios from 'axios';
-
-// Create axios instance with base configuration
-const api = axios.create({
-  baseURL: 'https://mern-project-1-backend-k9iu.onrender.com',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+import axiosInstance from '../api/axiosConfig';
 
 // Add request interceptor to include token in headers
-api.interceptors.request.use(config => {
+axiosInstance.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   console.log('Adding token to request:', token);
   if (token) {
@@ -23,7 +15,7 @@ api.interceptors.request.use(config => {
 });
 
 // Interceptor for logging and error handling
-api.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   response => response,
   error => {
     console.error('API Error:', {
@@ -41,7 +33,7 @@ export const authService = {
       // Validate input before sending
       this.validateLoginInput(credentials);
 
-      const response = await api.post('/auth/login', {
+      const response = await axiosInstance.post('/auth/login', {
         email: credentials.email,
         password: credentials.password
       });
@@ -83,7 +75,7 @@ export const authService = {
       // Validate input before sending
       this.validateRegisterInput(userData);
 
-      const response = await api.post('/auth/register', userData);
+      const response = await axiosInstance.post('/auth/register', userData);
 
       const { user, token } = response.data;
       
@@ -170,7 +162,7 @@ export const authService = {
 
     try {
       console.log('Making /me request with token:', token);
-      const response = await api.get('/auth/me', {
+      const response = await axiosInstance.get('/auth/me', {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'

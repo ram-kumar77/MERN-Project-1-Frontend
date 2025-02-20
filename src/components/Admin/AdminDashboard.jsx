@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
+import axiosInstance from '../../api/axiosConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faUsers, faTicket } from '@fortawesome/free-solid-svg-icons';
 import CreateEventModal from './CreateEventModal';
@@ -19,7 +19,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const eventsResponse = await axios.get('${baseURL}/api/events', {
+        const eventsResponse = await axiosInstance.get('/events', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
 
@@ -48,7 +48,7 @@ const AdminDashboard = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`${baseURL}/api/events/${eventId}`, {
+      await axiosInstance.delete(`/events/${eventId}`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
 
   const handleCreateEvent = async (eventData) => {
     try {
-      const response = await axios.post('${baseURL}/api/events', eventData, {
+      const response = await axiosInstance.post('/events', eventData, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 
@@ -87,7 +87,7 @@ const AdminDashboard = () => {
 
   const handleEditEvent = async (eventId, updatedData) => {
     try {
-      const response = await axios.put(`${baseURL}/api/events/${eventId}`, updatedData, {
+      const response = await axiosInstance.put(`/events/${eventId}`, updatedData, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 

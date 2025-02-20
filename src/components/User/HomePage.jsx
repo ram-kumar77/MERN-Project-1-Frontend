@@ -1,6 +1,6 @@
  import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../api/axiosConfig';
 import Navbar from '../Common/Navbar';
 import Footer from '../Common/Footer';
 
@@ -66,7 +66,7 @@ const HomePage = () => {
       try {
         setLoading(true);
         // Fetch events from your API
-        const eventsResponse = await axios.get('${baseURL}/api/events', {
+        const eventsResponse = await axiosInstance.get('/events', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

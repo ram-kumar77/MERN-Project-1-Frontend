@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Common/Navbar';
 import Footer from '../Common/Footer';
-import axios from 'axios';
+import axiosInstance from '../../api/axiosConfig';
 import PropTypes from 'prop-types';
 
 const BookingCard = ({ booking, onCancel, isPast = false }) => (
@@ -111,13 +111,13 @@ const UserDashboard = () => {
 
         // Fetch user tickets
         console.log('Fetching user tickets...');
-        const ticketsResponse = await axios.get('${baseURL}/api/tickets/user', {
+        const ticketsResponse = await axiosInstance.get('/tickets/user', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         console.log('Tickets response:', ticketsResponse.data);
 
         console.log('Fetching events...');
-        const eventsResponse = await axios.get('${baseURL}/api/events', {
+        const eventsResponse = await axiosInstance.get('/events', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         console.log('Events response:', eventsResponse.data);
@@ -160,7 +160,7 @@ const UserDashboard = () => {
 
   const handleCancelTicket = async (ticketId) => {
     try {
-      await axios.delete(`/api/tickets/${ticketId}`, {
+      await axiosInstance.delete(`/tickets/${ticketId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
 
