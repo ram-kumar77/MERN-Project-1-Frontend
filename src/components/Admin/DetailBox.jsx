@@ -14,4 +14,4 @@ const DetailBox = ({children,...otherProps}) => {
   )
 }
 
-export default DetailBox
+export default DetailBox;

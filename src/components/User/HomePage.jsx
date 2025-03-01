@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosConfig';
 import Navbar from '../Common/Navbar';
@@ -27,7 +27,7 @@ const EventCard = ({ event }) => {
         <p className="text-gray-600 mb-4">{event.description}</p>
         <div className="flex justify-between items-center mb-4">
           <span className="text-blue-600 font-semibold">{event.location}</span>
-          <span className="text-green-600">${event.ticketPrice}</span>
+          <span className="text-green-600">₹{event.ticketPrice}</span>
         </div>
       </div>
       <button
@@ -54,6 +54,39 @@ const HomePage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredEvents, setFilteredEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        const response = await axiosInstance.get('api/events');
+        if (response.data.success) {
+          setEvents(response.data.events);
+          setFilteredEvents(response.data.events); // Initialize filtered events
+        }
+      } catch (error) {
+        console.error('Failed to fetch events', error);
+        setError('Failed to load events. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    // Filter events based on search term
+    const results = events.filter(event =>
+      event.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredEvents(results);
+  }, [searchTerm, events]);
+
+  const navigate = useNavigate();
+  
 
   const dummyReviews = [
     { _id: 1, username: 'Alice', comment: 'Amazing experience!', rating: 5 },
@@ -66,7 +99,7 @@ const HomePage = () => {
       try {
         setLoading(true);
         // Fetch events from your API
-        const eventsResponse = await axiosInstance.get('/events', {
+        const eventsResponse = await axiosInstance.get('api/events', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -76,7 +109,7 @@ const HomePage = () => {
         // Ensure events is always an array
         const eventsData = Array.isArray(eventsResponse.data?.events) ? 
           eventsResponse.data.events : [];
-        setEvents(eventsData.slice(0, 3));
+        setEvents(eventsData.slice(0, ));
       } catch (error) {
         console.error('Failed to fetch events', error);
         if (error.response?.status === 401) {
@@ -118,6 +151,40 @@ const HomePage = () => {
   </div>
 </div>
 
+<div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Upcoming Events</h1>
+      <div className="flex mb-4">
+        <input
+          type="text"
+          placeholder="Search events by name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border rounded p-2 w-full"
+        />
+        <button
+          onClick={() => setSearchTerm(searchTerm)}
+          className="bg-blue-500 text-white px-4 py-2 rounded ml-2"
+        >
+          Search
+        </button>
+      </div>
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center">Loading...</div>
+      ) : error ? (
+        <div className="min-h-screen flex items-center justify-center">Error: {error}</div>
+      ) : (
+        <div className="grid md:grid-cols-3 gap-6">
+          {filteredEvents.length > 0 ? (
+            filteredEvents.map((event) => (
+              <EventCard key={event._id} event={event} />
+            ))
+          ) : (
+            <p>No events found</p>
+          )}
+        </div>
+      )}
+    </div>
+
 {/* About Section */}
 <section className="container mx-auto my-12 px-4" id='about' >
   <div className="flex flex-col md:flex-row items-center justify-center gap-8">
@@ -135,21 +202,6 @@ const HomePage = () => {
   </div>
 </section>
 
-
-      {/* Events Section */}
-      <section className="container mx-auto my-12 px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Upcoming Events</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {events.length > 0 ? (
-            events.map((event) => (
-              <EventCard key={event._id} event={event} />
-            ))
-          ) : (
-            <p>No events available at the moment.</p>
-          )}
-        </div>
-      </section>
-
       {/* Dummy Reviews Section */}
       <section className="bg-gray-100 py-12">
         <div className="container mx-auto px-4">
@@ -161,6 +213,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
       <Footer />
     </div>
   );

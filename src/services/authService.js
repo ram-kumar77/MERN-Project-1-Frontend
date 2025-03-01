@@ -33,7 +33,7 @@ export const authService = {
       // Validate input before sending
       this.validateLoginInput(credentials);
 
-      const response = await axiosInstance.post('/auth/login', {
+const response = await axiosInstance.post('/api/auth/login', {
         email: credentials.email,
         password: credentials.password
       });
@@ -75,7 +75,7 @@ export const authService = {
       // Validate input before sending
       this.validateRegisterInput(userData);
 
-      const response = await axiosInstance.post('/auth/register', userData);
+      const response = await axiosInstance.post('/api/auth/register', userData);
 
       const { user, token } = response.data;
       
@@ -162,7 +162,7 @@ export const authService = {
 
     try {
       console.log('Making /me request with token:', token);
-      const response = await axiosInstance.get('/auth/me', {
+const response = await axiosInstance.get('/api/auth/me', {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'

@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import axiosInstance from '../../api/axiosConfig';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar, faUsers, faTicket } from '@fortawesome/free-solid-svg-icons';
-import CreateEventModal from './CreateEventModal';
+import UserAuthentication from './userAuthentication'; // Importing UserAuthentication
 import EditEventModal from './EditEventModal';
-import Card from "./Card-Info";
 import Navigation from './Left-Navigation-Bar/Navigation';
 
 const AdminDashboard = () => {
   const [events, setEvents] = useState([]);
-  const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showUserManagement, setShowUserManagement] = useState(false); // State to control User Management visibility
 
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const eventsResponse = await axiosInstance.get('/events', {
+        const eventsResponse = await axiosInstance.get('api/events', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
 
@@ -48,7 +45,7 @@ const AdminDashboard = () => {
     if (!confirmDelete) return;
 
     try {
-      await axiosInstance.delete(`/events/${eventId}`, {
+      await axiosInstance.delete(`api/events/${eventId}`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 
@@ -60,20 +57,19 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleCreateEvent = async (eventData) => {
-    try {
-      const response = await axiosInstance.post('/events', eventData, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
+  // const handleCreateEvent = async (eventData) => {
+  //   try {
+  //     const response = await axiosInstance.post('api/events', eventData, {
+  //       headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+  //     });
 
-      setEvents(prevEvents => [...prevEvents, response.data]);
-      setShowCreateModal(false);
-      alert('Event created successfully');
-    } catch (error) {
-      console.error('Failed to create event', error);
-      alert('Failed to create event');
-    }
-  };
+  //     setEvents(prevEvents => [...prevEvents, response.data]);
+  //     toast.success('Event created successfully');
+  //   } catch (error) {
+  //     console.error('Failed to create event', error);
+  //     toast.error('Failed to create event');
+  //   }
+  // };
 
   const handleEditClick = (event) => {
     setSelectedEvent(event);
@@ -87,7 +83,7 @@ const AdminDashboard = () => {
 
   const handleEditEvent = async (eventId, updatedData) => {
     try {
-      const response = await axiosInstance.put(`/events/${eventId}`, updatedData, {
+      const response = await axiosInstance.put(`api/events/${eventId}`, updatedData, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 
@@ -116,15 +112,13 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <div className="w-64 fixed h-screen bg-blue-900">
-        <Navigation setShowCreateModal={setShowCreateModal} />
+        <Navigation setShowUserManagement={setShowUserManagement} />
       </div>
       <div className="ml-64 flex-1 px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
-        <div className="flex flex-wrap justify-center">
-          <Card heading='New Events' number='234' icon={faCalendar} />
-          <Card heading='User Registration' number='12,234' icon={faUsers} />
-          <Card heading='Ticket Sold' number='2394' icon={faTicket} />
-        </div>
+
+        {/* Render UserAuthentication Component based on navigation */}
+        {showUserManagement && <UserAuthentication />}
 
         {/* Events Management Section */}
         <section className="mb-12">
@@ -155,14 +149,6 @@ const AdminDashboard = () => {
             ))}
           </div>
         </section>
-
-        {/* Create Event Modal */}
-        {showCreateModal && (
-          <CreateEventModal 
-            onClose={() => setShowCreateModal(false)}
-            onCreateEvent={handleCreateEvent}
-          />
-        )}
 
         {/* Edit Event Modal */}
         {isEditModalOpen && selectedEvent && (

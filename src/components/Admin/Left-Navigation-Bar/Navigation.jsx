@@ -1,13 +1,13 @@
-import { faHome, faCalendarPlus, faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faCalendarPlus, faArrowRightToBracket, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import toast from "react-hot-toast";
 
-const Navigation = ({ setShowCreateModal }) => {
+const Navigation = ({ setShowUserManagement }) => {
   const navigate = useNavigate();
   const Navbar = [
     { Icon: faHome, Title: "Admin Dashboard", path: "/adashboard" },
-    { Icon: faCalendarPlus, Title: "Create Events", action: () => setShowCreateModal(true) }
+    { Icon: faUsers, Title: "User Management", action: () => setShowUserManagement(true) } // Updated to use action
   ];
 
   const LogoutUser = () => {
@@ -22,12 +22,28 @@ const Navigation = ({ setShowCreateModal }) => {
       <ul>
         {Navbar.map((nav, index) => (
           <li key={index} className="mb-3 border-b border-black text-[15px] cursor-pointer hover:bg-[#3e61bc] text-white p-2 mx-2">
-            {nav.path ? <Link to={nav.path}><FontAwesomeIcon icon={nav.Icon} className="pl-[10px] pr-[10px]" /><span>{nav.Title}</span></Link> : <button onClick={nav.action} className="w-full text-left"><FontAwesomeIcon icon={nav.Icon} className="pl-[10px] pr-[10px]" /><span>{nav.Title}</span></button>}
+            {nav.action ? (
+              <button onClick={nav.action} className="w-full text-left">
+                <FontAwesomeIcon icon={nav.Icon} className="pl-[10px] pr-[10px]" />
+                <span>{nav.Title}</span>
+              </button>
+            ) : (
+              <Link to={nav.path}>
+                <FontAwesomeIcon icon={nav.Icon} className="pl-[10px] pr-[10px]" />
+                <span>{nav.Title}</span>
+              </Link>
+            )}
           </li>
         ))}
       </ul>
-      <div className="text-center mt-auto mb-2 cursor-pointer text-white" onClick={LogoutUser}><p className="text-[18px]"><span className="max-md:hidden">Logout</span><FontAwesomeIcon icon={faArrowRightToBracket} className="pl-2" /></p></div>
+      <div className="text-center mt-auto mb-2 cursor-pointer text-white" onClick={LogoutUser}>
+        <p className="text-[18px]">
+          <span className="max-md:hidden">Logout</span>
+          <FontAwesomeIcon icon={faArrowRightToBracket} className="pl-2" />
+        </p>
+      </div>
     </>
   );
 };
+
 export default Navigation;

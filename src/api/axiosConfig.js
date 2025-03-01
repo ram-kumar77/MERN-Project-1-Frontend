@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://mern-project-1-backend-k9iu.onrender.com/api'; // Added /api prefix to match backend routes
+const API_BASE_URL = 'https://mern-project-1-backend-1.onrender.com'; // Updated to include /api prefix to match backend routes
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,

@@ -10,7 +10,9 @@ import Register from './components/Auth/Register';
 import HomePage from './components/User/HomePage';
 import UserDashboard from './components/User/UserDashboard';
 import EventDetails from './components/Events/EventDetails';
+import CreateEventPage from './components/User/CreateEventPage'; // Importing CreateEventPage
 
+import UserAuthentication from './components/Admin/userAuthentication'; // Importing UserAuthentication
 // Admin Components
 import AdminDashboard from './components/Admin/AdminDashboard';
 
@@ -61,16 +63,32 @@ function App() {
           </ProtectedRoute>
         } 
       />
-
-      {/* Admin Routes */}
       <Route 
-        path="/adashboard" 
+        path="/create-event" 
         element={
-          <ProtectedRoute adminOnly={true}>
-            <AdminDashboard />
+          <ProtectedRoute>
+            <CreateEventPage />
           </ProtectedRoute>
         } 
       />
+
+{/* Admin Routes */}
+<Route 
+  path="/adashboard" 
+  element={
+    <ProtectedRoute adminOnly={true}>
+      <AdminDashboard />
+    </ProtectedRoute>
+  } 
+/>
+<Route 
+  path="/user-authentication" 
+  element={
+    <ProtectedRoute adminOnly={true}>
+      <UserAuthentication />
+    </ProtectedRoute>
+  } 
+/>
 
       {/* Default Redirect */}
       <Route path="/" element={<Navigate to="/login" replace />} />

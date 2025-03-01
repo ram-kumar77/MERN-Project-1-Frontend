@@ -100,7 +100,7 @@ const EditEventModal = ({ isOpen, onClose, event, onEditEvent }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Ticket Price ($)</label>
+                <label className="block text-sm font-medium mb-1">Ticket Price (₹)</label>
                 <input
                   type="number"
                   name="ticketPrice"

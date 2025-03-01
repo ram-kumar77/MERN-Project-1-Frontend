@@ -9,8 +9,11 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
+      console.log('Initializing authentication...');
       const token = localStorage.getItem('token');
       const storedUser = JSON.parse(localStorage.getItem('user'));
+      console.log('Retrieved token:', token);
+      console.log('Retrieved user:', storedUser);
       
       if (token && storedUser) {
         try {

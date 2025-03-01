@@ -25,7 +25,7 @@ const EventDetails = () => {
           throw new Error('Invalid event ID');
         }
 
-        const response = await axiosInstance.get(`/events/${id}`, {
+        const response = await axiosInstance.get(`api/events/${id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -112,7 +112,7 @@ const EventDetails = () => {
                   <strong>Available Tickets:</strong> {event.availableTickets || '0'}
                 </div>
                 <div className="mb-4 text-2xl font-bold text-green-600">
-                  Ticket Price: ${event.ticketPrice || '0.00'}
+                  Ticket Price: ₹{event.ticketPrice || '0.00'}
                 </div>
                 <button
                   onClick={handlePurchaseTicket}
